@@ -3,7 +3,6 @@ require_once('ORM/Database.php');
 require_once('ORM/orm.php');
 require_once('veterinarios.php');
 
-// Verificar si se ha enviado el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new Database();
     $encontrado = $db->verificarDriver();
@@ -12,13 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cnn = $db->getConnection();
         $veterinarioModelo = new Veterinario($cnn);
 
-        // Validar y obtener datos del formulario
         $id = $_POST['id'] ?? '';
         $nombres = $_POST['nombres'] ?? '';
         $apellidos = $_POST['apellidos'] ?? '';
         $especialidad = $_POST['especialidad'] ?? '';
 
-        // Validar los datos antes de la actualización (puedes agregar más validaciones según tus necesidades)
         if (!empty($id) && !empty($nombres) && !empty($apellidos) && !empty($especialidad)) {
 
             $datosActualizacion = [
@@ -27,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'especialidad' => $especialidad,
             ];
 
-            // Utilizar la clase Orm para actualizar
             if ($veterinarioModelo->updateById($id, $datosActualizacion)) {
                 echo 'Datos actualizados correctamente.';
                 echo '<script>
@@ -44,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 } else {
-    // Si no se ha enviado el formulario, intenta cargar los datos del veterinario para mostrarlos en el formulario.
     $db = new Database();
     $encontrado = $db->verificarDriver();
 
@@ -52,28 +47,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cnn = $db->getConnection();
         $veterinarioModelo = new Veterinario($cnn);
 
-        // Obtener el ID del veterinario de la URL
         $id = $_GET['id'] ?? '';
 
-        // Validar que el ID no esté vacío
         if (!empty($id)) {
-            // Obtener los datos del veterinario por ID
             $veterinario = $veterinarioModelo->getById($id);
 
-            // Verificar si se encontró el veterinario
             if ($veterinario) {
-                // Los datos del veterinario se usarán para prellenar el formulario
                 $id = $veterinario['id'];
                 $nombres = $veterinario['nombre'];
                 $apellidos = $veterinario['apellidos'];
                 $especialidad = $veterinario['especialidad'];
             } else {
-                // No se encontró el veterinario, puedes redirigir o mostrar un mensaje de error
                 echo 'Veterinario no encontrado.';
                 exit();
             }
         } else {
-            // ID vacío, puedes redirigir o mostrar un mensaje de error
             echo 'ID de veterinario no proporcionado.';
             exit();
         }
@@ -94,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         #contenedorTablaFormulario {
-            min-height: 500px; /* Establece una altura mínima para el contenedor */
+            min-height: 500px;
         }
 
         .hidden {

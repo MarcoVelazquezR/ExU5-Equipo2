@@ -3,7 +3,6 @@ require_once('ORM/Database.php');
 require_once('ORM/orm.php');
 require_once('veterinarios.php');
 
-// Verificar si se ha enviado el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new Database();
     $encontrado = $db->verificarDriver();
@@ -12,12 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cnn = $db->getConnection();
         $veterinarioModelo = new Veterinario($cnn);
 
-        // Validar y obtener datos del formulario
         $nombres = $_POST['nombres'] ?? '';
         $apellidos = $_POST['apellidos'] ?? '';
         $especialidad = $_POST['especialidad'] ?? '';
 
-        // Validar los datos antes de la inserción (puedes agregar más validaciones según tus necesidades)
         if (!empty($nombres) && !empty($apellidos) && !empty($especialidad)) {
 
             $datosInsercion = [
@@ -57,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         #contenedorTablaFormulario {
-            min-height: 500px; /* Establece una altura mínima para el contenedor */
+            min-height: 500px; 
         }
 
         .hidden {
