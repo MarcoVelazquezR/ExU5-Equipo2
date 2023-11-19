@@ -101,10 +101,7 @@ class Orm {
     $fin = strrpos("$sql", ",");
     $sql = substr($sql, 0, $fin);
     $sql .= ")";
-    
-    echo "<br>";
-    echo $sql;
-    echo "<br>";
+  
     
     $stm = $this->db->prepare($sql);
 

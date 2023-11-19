@@ -21,20 +21,25 @@
     require_once('ORM/Database.php');
     require_once('ORM/orm.php');
     require_once('ORM/veterinarios.php');
-
-    $db = new Database();
-    $encontrado = $db->verificarDriver();
-
-    $cnn = $db->getConnection();
-    $veterinarioModelo = new Veterinario($cnn);
-    $veterinarios = $veterinarioModelo->getAll();
+    
+    $db= new Database();
+    $encontrado=$db->verificarDriver();
+    
     ?>
-
     <div class="text-left">
-        <button class="btn btn-success" data-toggle="modal" data-target="#addVeterinarioModal">
-            + Añadir Veterinario
-        </button>
+        <a href="insert_veterinario.php" class="btn btn-success" data-title="Insertar" data-toggle="tooltip" title="Insert">
+                <span class="glyphicon glyphicon-plus"></span> Añadir Veterinario
+        </a>
     </div>
+    
+    <?php
+    if($encontrado){
+        $cnn = $db->getConnection();
+        $veterinarioModelo = new Veterinario($cnn);
+        $veterinarios = $veterinarioModelo->getAll();
+    }
+
+    ?>
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
@@ -43,7 +48,7 @@
                     <th class="col-sm-1">ID</th>
                     <th class="col-sm-2">Nombres</th>
                     <th class="col-sm-4">Apellidos</th>
-                    <th class="col-sm-1">Especialidad</th>
+                    <th class="col-sm-2">Especialidad</th>
                     <th class="col-sm-1">Detalles</th>
                     <th class="col-sm-1">Editar</th>
                     <th class="col-sm-1">Eliminar</th>
@@ -57,32 +62,28 @@
                         <td><?= $veterinario['apellidos']; ?></td>
                         <td><?= $veterinario['especialidad']; ?></td>
                         <td class="Ver">
-                            <p data-placement="top" data-toggle="tooltip" title="Ver">
-                                <button class="btn btn-info btn-xs" data-title="Ver" data-toggle="modal" data-target="#ver" >
-                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                </button>
-                            </p>
+                            <a href="ver_veterinario.php?id=<?= $veterinario['id']; ?>" class="btn btn-info btn-xs" data-title="Ver" data-toggle="tooltip" title="Ver">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                            </a>
                         </td>
                         <td class="Editar">
-                            <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                <button class="btn btn-warning btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" >
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </button>
-                            </p>
+                            <a href="update_veterinario.php?id=<?= $veterinario['id'] ?>" class="btn btn-warning btn-xs" data-title="Edit" data-toggle="modal">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
                         </td>
+
                         <td class="Eliminar">
                             <p data-placement="top" data-toggle="tooltip" title="Delete">
-                                <button class="btn btn-danger btn-xs eliminar" data-title="Delete" data-toggle="modal" data-id="<?= $veterinario['id'] ?>">
+                                <a href="delete_veterinario.php?id=<?= $veterinario['id']; ?>" class="btn btn-danger btn-xs">
                                     <span class="glyphicon glyphicon-trash"></span>
-                                </button>
+                                </a>
                             </p>
                         </td>
+
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-
-    
 </body>
 </html>
