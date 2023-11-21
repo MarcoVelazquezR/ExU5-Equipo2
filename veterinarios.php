@@ -49,7 +49,6 @@
                     <th class="col-sm-2">Nombres</th>
                     <th class="col-sm-4">Apellidos</th>
                     <th class="col-sm-2">Especialidad</th>
-                    <th class="col-sm-1">Detalles</th>
                     <th class="col-sm-1">Editar</th>
                     <th class="col-sm-1">Eliminar</th>
                 </tr>
@@ -61,11 +60,6 @@
                         <td><?= $veterinario['nombre'] ?></td>
                         <td><?= $veterinario['apellidos']; ?></td>
                         <td><?= $veterinario['especialidad']; ?></td>
-                        <td class="Ver">
-                            <a href="ver_veterinario.php?id=<?= $veterinario['id']; ?>" class="btn btn-info btn-xs" data-title="Ver" data-toggle="tooltip" title="Ver">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                            </a>
-                        </td>
                         <td class="Editar">
                             <a href="update_veterinario.php?id=<?= $veterinario['id'] ?>" class="btn btn-warning btn-xs" data-title="Edit" data-toggle="modal">
                                 <span class="glyphicon glyphicon-edit"></span>
