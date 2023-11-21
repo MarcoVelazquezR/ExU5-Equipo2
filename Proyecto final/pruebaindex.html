@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper@1.16.1/dist/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="CSS/styles.css">
 
@@ -20,7 +21,7 @@
         });
     </script>
 
-    
+
 </head>
 <body>
     <header width="100%">
@@ -45,7 +46,7 @@
                 <div style="position: absolute; top: 90%; left: 50%; transform: translate(-50%, -50%)">
                     <div class="login-container" style="display: none; background-color: whitesmoke; padding: 20px;">
                         <h2>Iniciar Sesión</h2>
-                        <form action="procesar_login.php" method="post">
+                        <form id="login-form" action="procesar_login.php" method="post">
                             <div class="form-group">
                                 <label for="username">Nombre de Usuario:</label><br>
                                 <input type="text" id="username" name="username" required>
@@ -56,6 +57,26 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
                         </form>
+                        <script>
+                            $(document).ready(function(){
+                                $("#login-form").submit(function(e){
+                                    e.preventDefault(); // Evita que el formulario se envíe normalmente
+                        
+                                    // Realiza una solicitud AJAX al archivo PHP
+                                    $.ajax({
+                                        type: "POST",
+                                        url: $(this).attr('action'),
+                                        data: $(this).serialize(), // Serializa los datos del formulario
+                                        success: function(response){
+                                            // Muestra la respuesta en algún contenedor en tu página
+                                            $("#resultado-login").html(response);
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        
+                        <div id="resultado-login"></div>
                     </div>
                 </div>
                 <img src="img/fondo.jpg" alt="" width="100%">
@@ -75,4 +96,3 @@
     </header>
 </body>
 </html>
-
