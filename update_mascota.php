@@ -12,23 +12,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mascotaModelo = new Mascota ($cnn);
 
         $id = $_POST['id'] ?? '';
-        $nombres = $_POST['nombres'] ?? '';
-        $apellidos = $_POST['apellidos'] ?? '';
-        $especialidad = $_POST['especialidad'] ?? '';
+        $nombre = $_POST['nombre'] ?? '';
+        $edad = $_POST['edad'] ?? '';
+        $peso = $_POST['peso'] ?? '';
 
-        if (!empty($id) && !empty($nombres) && !empty($apellidos) && !empty($especialidad)) {
+        if (!empty($id) && !empty($nombre) && !empty($edad) && !empty($peso)) {
 
             $datosActualizacion = [
-                'nombre' => $nombres,
-                'apellidos' => $apellidos,
-                'especialidad' => $especialidad,
+                'nombre' => $nombre,
+                'edad' => $edad,
+                'peso' => $peso,
             ];
 
-            if ($veterinarioModelo->updateById($id, $datosActualizacion)) {
+            if ($mascotaModelo->updateById($id, $datosActualizacion)) {
                 echo 'Datos actualizados correctamente.';
                 echo '<script>
                         setTimeout(function(){
-                            window.location.href = "veterinarios.php";
+                            window.location.href = "mascotas.php";
                         });
                       </script>';
                 exit();
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo 'Error al actualizar datos.';
             }
         } else {
-            echo 'Por favor, completa todos los campos del formulario.';
+            echo 'Por favor, completa todos los campos del formulario 1.';
         }
     }
 } else {
@@ -45,24 +45,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($encontrado) {
         $cnn = $db->getConnection();
-        $veterinarioModelo = new Veterinario($cnn);
+        $mascotaModelo = new Mascota($cnn);
 
         $id = $_GET['id'] ?? '';
 
         if (!empty($id)) {
-            $veterinario = $veterinarioModelo->getById($id);
+            $mascota = $mascotaModelo->getById($id);
 
-            if ($veterinario) {
-                $id = $veterinario['id'];
-                $nombres = $veterinario['nombre'];
-                $apellidos = $veterinario['apellidos'];
-                $especialidad = $veterinario['especialidad'];
+            if ($mascota) {
+                $id = $mascota['id'];
+                $nombre = $mascota['nombre'];
+                $edad = $mascota['edad'];
+                $peso = $mascota['peso'];
             } else {
-                echo 'Veterinario no encontrado.';
+                echo 'Mascota no encontrado.';
                 exit();
             }
         } else {
-            echo 'ID de veterinario no proporcionado.';
+            echo 'ID de mascota no proporcionado.';
             exit();
         }
     }
@@ -100,24 +100,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="hidden" name="id" value="<?php echo $id ?? ''; ?>">
 
                 <div class="mb-3" >
-                    <label for="nombres" class="form-label">Nombres:</label>
-                    <input type="text" class="form-control" name="nombres" value="<?php echo $nombres ?? ''; ?>" required>
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" name="nombre" value="<?php echo $nombre ?? ''; ?>" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="apellidos" class="form-label">Apellidos:</label>
-                    <input type="text" class="form-control" name="apellidos" value="<?php echo $apellidos ?? ''; ?>" required>
+                    <label for="edad" class="form-label">Edad:</label>
+                    <input type="text" class="form-control" name="edad" value="<?php echo $edad ?? ''; ?>" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="especialidad" class="form-label">Especialidad:</label>
-                    <select class="form-select form-select-lg" name="especialidad" required>
-                        <option value="Cirugía" <?php echo ($especialidad == 'Cirugía') ? 'selected' : ''; ?>>Cirugía</option>
-                        <option value="Oncología" <?php echo ($especialidad == 'Oncología') ? 'selected' : ''; ?>>Oncología</option>
-                        <option value="Fisioterapia" <?php echo ($especialidad == 'Fisioterapia') ? 'selected' : ''; ?>>Fisioterapia</option>
-                        <option value="Rehabilitación" <?php echo ($especialidad == 'Rehabilitación') ? 'selected' : ''; ?>>Rehabilitación</option>
-                        <option value="Imagenología" <?php echo ($especialidad == 'Imagenología') ? 'selected' : ''; ?>>Imagenología</option>
-                    </select>
+                    <label for="peso" class="form-label">Peso:</label>
+                    <input type="text" class="form-control" name="peso" value="<?php echo $peso ?? ''; ?>" required>
                 </div>
                 <button type="button" class="btn btn-primary" id="btnActualizar">Actualizar</button>
             </form>
@@ -130,12 +124,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $(document).ready(function() {
             $('#btnActualizar').click(function() {
                 var id = $('input[name="id"]').val();
-                var nombres = $('input[name="nombres"]').val();
-                var apellidos = $('input[name="apellidos"]').val();
-                var especialidad = $('select[name="especialidad"]').val();
+                var nombre = $('input[name="nombre"]').val();
+                var edad = $('input[name="edad"]').val();
+                var peso = $('input[name="peso"]').val();
 
-                if (id === '' || nombres === '' || apellidos === '' || especialidad === '') {
-                    alert('Por favor, completa todos los campos del formulario.');
+                if (id === '' || nombre === '' || edad === '' || peso === '') {
+                    alert('Por favor, completa todos los campos del formulario 2.');
                     return;
                 }
 
