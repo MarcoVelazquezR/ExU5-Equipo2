@@ -1,3 +1,6 @@
+<?php
+include 'includes/header.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,25 +28,15 @@
     require_once('ORM/orm.php');
     require_once('ORM/mascotas.php');
     require_once('ORM/clientes.php');
-
+    $clienteID = isset($_GET['id']) ? $_GET['id'] : null;
+    echo '<h1>CLIENTE ID:' . $clienteID . '</h1>';
     $db = new Database();
     $encontrado = $db->verificarDriver();
 
     ?>
 
-    <div class="text-left">
-        <label for="clientes">Selecciona un cliente:</label>
-        <select id="clientes" class="form-control" onchange="updateClientInfo()">
-            <?php
-            // Obtener la lista de clientes desde la base de datos
-            $clienteModelo = new Cliente($db->getConnection());
-            $clientes = $clienteModelo->getAll();
 
-            foreach ($clientes as $cliente) {
-                echo "<option value='{$cliente['id']}'>{$cliente['nombres']} {$cliente['apellidos']}</option>";
-            }
-            ?>
-        </select>
+    <div class="text-left">
 
         <div class="mb-3">
             <label for="nombreCliente">Nombres del Cliente:</label>
@@ -55,111 +48,24 @@
             <input type="text" class="form-control" id="telefonoCliente" readonly value="">
         </div>
         <div class="text-left">
-            <form action="insert_mascota.php" method="get">
-                <input type="hidden" name="clienteId" value="<?= $cliente['id'] ?>">
-                <button type="submit" class="btn btn-success" data-title="Insertar" data-toggle="tooltip" title="Insert">
-                    <span class="glyphicon glyphicon-plus"></span> Añadir Mascota
-                </button>
-            </form>
+            <a href="insert_MASCOTA.php?id=<?= $clienteID ?>" class="btn btn-success" data-title="Insertar" data-toggle="tooltip" title="Insert">
+            <span class="glyphicon glyphicon-plus"></span> Añadir Mascota
+            </a>
         </div>
     </div>
-
-    <script>
-        function updateMascotasTable(clienteId) {
-            let selectedClienteId = document.getElementById('clientes').value;
-            let clientesData = <?php echo json_encode($clientes); ?>;
-
-            for (let cliente of clientesData) {
-                if (cliente.id === parseInt(selectedClienteId)) {
-                    document.getElementById('nombreCliente').value = `${cliente.nombres} ${cliente.apellidos}`;
-                    document.getElementById('telefonoCliente').value = cliente.telefono;
-                    break;
-                }
-            }
-            <?php
-            if ($encontrado) {
-                $cnn = $db->getConnection();
-                $mascotaModelo = new Mascota($cnn);
-                $selectedClienteId = isset($_GET['clienteId']) ? $_GET['clienteId'] : null;
-
-                // Verifica si se ha seleccionado un cliente
-                if ($selectedClienteId !== null) {
-                    $cnn = $db->getConnection();
-                    $mascotaModelo = new Mascota($cnn);
-
-                    // Obtén solo las mascotas asociadas al cliente seleccionado
-                    $mascotas = $mascotaModelo->getByClienteId($selectedClienteId);
-                } else {
-                    // Si no se ha seleccionado un cliente, muestra todas las mascotas
-                    $mascotaModelo = new Mascota($cnn);
-                    $mascotas = $mascotaModelo->getAll();
-                }
-            }
-
-            ?>
-            $.ajax({
-                type: 'GET',
-                url: 'get_mascotas.php', 
-                data: {
-                    clienteId: selectedClienteId
-                },
-                success: function(data) {
-                    $('#mascotasTableBody').html(data);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching mascotas:', error);
-                }
-            });
-        }
-
-        function updateClientInfo() {
-            let selectedClienteId = document.getElementById('clientes').value;
-            let clientesData = <?php echo json_encode($clientes); ?>;
-
-            for (let cliente of clientesData) {
-                if (cliente.id === parseInt(selectedClienteId)) {
-                    document.getElementById('nombreCliente').value = `${cliente.nombres} ${cliente.apellidos}`;
-                    document.getElementById('telefonoCliente').value = cliente.telefono;
-                    break;
-                }
-            }
-            <?php
-            if ($encontrado) {
-                $cnn = $db->getConnection();
-                $mascotaModelo = new Mascota($cnn);
-                $selectedClienteId = isset($_GET['clienteId']) ? $_GET['clienteId'] : null;
-
-                // Verifica si se ha seleccionado un cliente
-                if ($selectedClienteId !== null) {
-                    $cnn = $db->getConnection();
-                    $mascotaModelo = new Mascota($cnn);
-
-                    // Obtén solo las mascotas asociadas al cliente seleccionado
-                    $mascotas = $mascotaModelo->getByClienteId($selectedClienteId);
-                } else {
-                    // Si no se ha seleccionado un cliente, muestra todas las mascotas
-                    $mascotaModelo = new Mascota($cnn);
-                    $mascotas = $mascotaModelo->getAll();
-                }
-            }
-
-            ?>
-            $.ajax({
-                type: 'GET',
-                url: 'get_mascotas.php',
-                data: {
-                    clienteId: selectedClienteId
-                },
-                success: function(data) {
-                    $('#mascotasTableBody').html(data);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching mascotas:', error);
-                }
-            });
-        }
-    </script>
-
+    <?php
+    if ($encontrado) {
+        $cnn = $db->getConnection();
+        $clienteModelo = new Cliente($cnn);
+        $cliente = $clienteModelo->getById($clienteID);
+        echo '
+                <script>
+                    document.getElementById(\'nombreCliente\').value = \'' . $cliente['nombres'] . ' ' . $cliente['apellidos'] . '\';
+                    document.getElementById(\'telefonoCliente\').value = \'' . $cliente['telefono'] . '\';
+                </script>
+            ';
+    }
+    ?>
     <script>
         $(document).ready(function() {
             $('#btnInsertar').click(function() {
@@ -181,7 +87,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: 'inserta_mascota.php', 
+                    url: 'inserta_mascota.php',
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -201,16 +107,11 @@
     if ($encontrado) {
         $cnn = $db->getConnection();
         $mascotaModelo = new Mascota($cnn);
-        $selectedClienteId = isset($_GET['clienteId']) ? $_GET['clienteId'] : null;
 
-        if ($selectedClienteId !== null) {
-            $cnn = $db->getConnection();
-            $mascotaModelo = new Mascota($cnn);
-
-            $mascotas = $mascotaModelo->getByClienteId($selectedClienteId);
+        if ($clienteID !== null) {
+            $mascotas = $mascotaModelo->getByClienteId($clienteID);
         }
     }
-
     ?>
 
     <div class="table-responsive">
@@ -233,13 +134,13 @@
                         <td><?= $mascota['edad']; ?></td>
                         <td><?= $mascota['peso']; ?></td>
                         <td class="Editar">
-                            <a href="update_mascota.php?id=<?= $mascota['id'] ?>" class="btn btn-warning btn-xs" data-title="Edit" data-toggle="modal">
+                            <a href="update_mascota.php?id=<?= $mascota['id'] ?>&id_cliente=<?= $clienteID ?>" class="btn btn-warning btn-xs" data-title="Edit" data-toggle="modal">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                         </td>
                         <td class="Eliminar">
                             <p data-placement="top" data-toggle="tooltip" title="Delete">
-                                <a href="delete_mascota.php?id=<?= $mascota['id']; ?>" class="btn btn-danger btn-xs">
+                                <a href="delete_mascota.php?id=<?= $mascota['id']; ?>&id_cliente=<?= $clienteID ?>" class="btn btn-danger btn-xs">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
                             </p>

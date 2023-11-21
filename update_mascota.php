@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($encontrado) {
         $cnn = $db->getConnection();
         $mascotaModelo = new Mascota ($cnn);
-
+        $id_cliente = $_GET['id_cliente'] ?? '';
         $id = $_POST['id'] ?? '';
         $nombre = $_POST['nombre'] ?? '';
         $edad = $_POST['edad'] ?? '';
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo 'Datos actualizados correctamente.';
                 echo '<script>
                         setTimeout(function(){
-                            window.location.href = "mascotas.php";
+                            window.location.href = "mascotas.php?id=' . $id_cliente . '";
                         });
                       </script>';
                 exit();
