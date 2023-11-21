@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
-                <a href="index.php" class="btn btn-secondary">Regresar</a>
+                <a href="clientes.php" class="btn btn-secondary">Regresar</a>
             </form>
     </div>
 <?php } ?>
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
     });
 
-    header("Location: index.php");
+    header("Location: clientes.php");
 </script>
 
 </body>

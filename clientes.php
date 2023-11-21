@@ -113,7 +113,7 @@
                 <input type="text" class="form-control" id="telefono" name="telefono" required>
             </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a href="index.php" class="btn btn-secondary">Regresar</a>
+            <a href="clientes.php" class="btn btn-secondary">Regresar</a>
         </form>
     </div>
 
@@ -209,9 +209,9 @@
                     $output .= "<td>"  . $row['Nombres'] . "</td>";
                     $output .= "<td>" . $row['Apellidos'] . "</td>";
                     $output .= "<td>" . $row['Telefono'] . "</td>";
-                    $output .= "<td>" . "<a href='mascotas.php?id=" . $row['ID'] . "' class='btn btn-outline-info'><i class='fas fa-eye'></i><b>INFO</b> ℹ️</a></td>";
-                    $output .= "<td>" . "<a href='editar.php' class='btn btn-outline-warning'><i class='fas fa-edit'></i><b>Editar</b> ✏️</a></td>";
-                    $output .= "<td>" . "<a href='eliminar.php' class='btn btn-outline-danger'><i class='fas fa-trash-alt'></i><b>Eliminar</b> 🗑️</a></td>";
+                    $output .= "<td>" . " <a href='mascotas.php?id=". $row['ID']. "' class='btn btn-outline-info'><i class='fas fa-eye'></i><b>INFO</b> ℹ️</a></td>";
+                    $output .= "<td>" . "<a href='update_cliente.php?id=". $row['ID']. "' class='btn btn-outline-warning'><i class='fas fa-edit'></i><b>Editar</b> ✏️</a></td>";
+                    $output .= "<td>" . "<a href='delete_cliente.php?id=". $row['ID']. "' class='btn btn-outline-danger'><i class='fas fa-trash-alt'></i><b>Eliminar</b> 🗑️</a></td>";
                     $output .= "</tr>";
                 }
                 $output .= "</thead>"; // Fin de la tabla
