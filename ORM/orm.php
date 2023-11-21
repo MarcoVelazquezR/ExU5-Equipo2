@@ -61,17 +61,10 @@ class Orm {
     foreach ($data as $key => $value) {
       $sql .= " {$key} = :{$key}, ";
     }
-    
-    echo "<br>";
-    echo $sql;
-    echo "<br>";
 
     $fin = strrpos("$sql", ",");
     $sql = substr($sql, 0, $fin);
     $sql .= " WHERE id = :id";
-
-    echo $sql;
-    echo "<br>";
 
     $data['id'] = $id;
     $stm = $this->db->prepare($sql);

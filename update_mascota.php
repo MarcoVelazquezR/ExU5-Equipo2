@@ -12,11 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mascotaModelo = new Mascota($cnn);
         $id_mascota = $_POST['id_mascota'] ?? '';
         $id_cliente = $_GET['id'] ?? '';
-
-        // Output the values for debugging
-        var_dump($id_cliente);
-        var_dump($id_mascota);
-
         $nombre = $_POST['nombre'] ?? '';
         $edad = $_POST['edad'] ?? '';
         $peso = $_POST['peso'] ?? '';
@@ -30,7 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
 
             if ($mascotaModelo->updateById($id_mascota, $datosActualizacion)) {
-                header('Location: mascotas.php?id=' . $id_cliente);
+                echo '<script>
+                        setTimeout(function(){
+                            window.location.href = "mascotas.php?id=' . $id_cliente . '";
+                        });
+                      </script>';
                 exit();
             } else {
                 echo 'Error al actualizar datos.';
@@ -97,9 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container mt-3" id="contenedorTablaFormulario">
         <?php if (!isset($_POST) || empty($_POST)) { ?>
             <h2>Formulario</h2>
-            <?php
-            echo '<h1>CLIENTE ID8:' . $id_cliente . '</h1>';
-            ?>
             <form action="" method="post" id="formActualizacion">
 
                 <input type="hidden" name="id_mascota" value="<?php echo $id_mascota ?? ''; ?>"> <!-- Cambiado de 'id' a 'id_mascota' -->

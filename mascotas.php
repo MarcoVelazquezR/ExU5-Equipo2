@@ -5,7 +5,6 @@ require_once('ORM/orm.php');
 require_once('ORM/mascotas.php');
 require_once('ORM/clientes.php');
 $clienteID = isset($_GET['id']) ? $_GET['id'] : null;
-echo '<h1>CLIENTE ID1:' . $clienteID . '</h1>';
 $db = new Database();
 $encontrado = $db->verificarDriver();
 
