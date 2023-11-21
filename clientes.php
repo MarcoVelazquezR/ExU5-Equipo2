@@ -113,7 +113,7 @@
                 <input type="text" class="form-control" id="telefono" name="telefono" required>
             </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a href="index.php" class="btn btn-secondary">Regresar</a>
+            <a href="clientes.php" class="btn btn-secondary">Regresar</a>
         </form>
     </div>
 

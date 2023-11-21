@@ -1,6 +1,7 @@
 <?php
 require_once('ORM/Database.php');
 require_once('ORM/orm.php');
+require_once('ORM/clientes.php');
 require_once('clientes.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
