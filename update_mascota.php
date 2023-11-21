@@ -9,14 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($encontrado) {
         $cnn = $db->getConnection();
-        $mascotaModelo = new Mascota ($cnn);
-
-        $id = $_POST['id'] ?? '';
+        $mascotaModelo = new Mascota($cnn);
+        $id_mascota = $_POST['id_mascota'] ?? '';
+        $id_cliente = $_GET['id'] ?? '';
         $nombre = $_POST['nombre'] ?? '';
         $edad = $_POST['edad'] ?? '';
         $peso = $_POST['peso'] ?? '';
 
-        if (!empty($id) && !empty($nombre) && !empty($edad) && !empty($peso)) {
+        if (!empty($id_mascota) && !empty($nombre) && !empty($edad) && !empty($peso) && !empty($id_cliente)) {
 
             $datosActualizacion = [
                 'nombre' => $nombre,
@@ -24,11 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'peso' => $peso,
             ];
 
-            if ($mascotaModelo->updateById($id, $datosActualizacion)) {
-                echo 'Datos actualizados correctamente.';
+            if ($mascotaModelo->updateById($id_mascota, $datosActualizacion)) {
                 echo '<script>
                         setTimeout(function(){
-                            window.location.href = "mascotas.php";
+                            window.location.href = "mascotas.php?id=' . $id_cliente . '";
                         });
                       </script>';
                 exit();
@@ -47,13 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cnn = $db->getConnection();
         $mascotaModelo = new Mascota($cnn);
 
-        $id = $_GET['id'] ?? '';
+        $id = $_GET['id_mascota'] ?? '';  // Cambiado de 'id' a 'id_mascota'
 
         if (!empty($id)) {
             $mascota = $mascotaModelo->getById($id);
 
             if ($mascota) {
-                $id = $mascota['id'];
+                $id_mascota = $mascota['id'];  // Cambiado de 'id' a 'id_mascota'
                 $nombre = $mascota['nombre'];
                 $edad = $mascota['edad'];
                 $peso = $mascota['peso'];
@@ -71,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,53 +90,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
+
 <body>
 
     <div class="container mt-3" id="contenedorTablaFormulario">
         <?php if (!isset($_POST) || empty($_POST)) { ?>
             <h2>Formulario</h2>
             <form action="" method="post" id="formActualizacion">
-                
-            <input type="hidden" name="id" value="<?php echo $id ?? ''; ?>">
 
-                <div class="mb-3" >
-                    <label for="nombre" class="form-label">Nombre:</label>
+                <input type="hidden" name="id_mascota" value="<?php echo $id_mascota ?? ''; ?>"> <!-- Cambiado de 'id' a 'id_mascota' -->
+
+                <div class="mb-3">
+                    <label class="form-label">Nombre:</label>
                     <input type="text" class="form-control" name="nombre" value="<?php echo $nombre ?? ''; ?>" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="edad" class="form-label">Edad:</label>
+                    <label class="form-label">Edad:</label>
                     <input type="text" class="form-control" name="edad" value="<?php echo $edad ?? ''; ?>" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="peso" class="form-label">Peso:</label>
+                    <label class="form-label">Peso:</label>
                     <input type="text" class="form-control" name="peso" value="<?php echo $peso ?? ''; ?>" required>
                 </div>
                 <button type="button" class="btn btn-primary" id="btnActualizar">Actualizar</button>
             </form>
-        </div>
-        <?php } ?>
     </div>
+<?php } ?>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#btnActualizar').click(function() {
-                var id = $('input[name="id"]').val();
-                var nombre = $('input[name="nombre"]').val();
-                var edad = $('input[name="edad"]').val();
-                var peso = $('input[name="peso"]').val();
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#btnActualizar').click(function() {
+            var id_mascota = $('input[name="id_mascota"]').val(); // Cambiado de 'id' a 'id_mascota'
+            var nombre = $('input[name="nombre"]').val();
+            var edad = $('input[name="edad"]').val();
+            var peso = $('input[name="peso"]').val();
 
-                if (id === '' || nombre === '' || edad === '' || peso === '') {
-                    alert('Por favor, completa todos los campos del formulario 2.');
-                    return;
-                }
+            if (id_mascota === '' || nombre === '' || edad === '' || peso === '') {
+                alert('Por favor, completa todos los campos del formulario 2.');
+                return;
+            }
 
-                $('#formActualizacion').submit();
-            });
+            $('#formActualizacion').submit();
         });
-    </script>
+    });
+</script>
 
 </body>
+
 </html>

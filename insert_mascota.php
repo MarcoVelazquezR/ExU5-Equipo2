@@ -2,7 +2,6 @@
 require_once('ORM/Database.php');
 require_once('ORM/orm.php');
 require_once('mascotas.php');
-$id_cliente = isset($_GET['clienteId']) ? $_GET['clienteId'] : null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new Database();
@@ -11,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($encontrado) {
         $cnn = $db->getConnection();
         $mascotaModelo = new Mascota($cnn);
-
+        $id_cliente = $_GET['id'] ?? '';
         $nombre = $_POST['nombre'] ?? '';
         $edad = $_POST['edad'] ?? '';
         $peso = $_POST['peso'] ?? '';
@@ -29,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo 'Datos insertados correctamente.';
                 echo '<script>
                         setTimeout(function(){
-                            window.location.href = "mascotas.php";
+                            window.location.href = "mascotas.php?id=' . $id_cliente . '";
                         });
                       </script>';
                 exit();
