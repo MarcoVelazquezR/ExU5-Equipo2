@@ -1,20 +1,3 @@
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-    setTimeout(function(){
-        $.confirm({
-            title: 'Eliminacion',
-            content: 'Desea eliminar los datos?',
-            buttons: {
-                confirm: function () {
-                    
-                },
-                cancel: function () {
-                    window.location.href = "clientes.php";
-                }
-            }
-        });
-    });
-</script>
 <?php
 require_once('ORM/Database.php');
 require_once('ORM/orm.php');
