@@ -13,15 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $clienteModelo = new Cliente($cnn);
 
         $id = $_POST['id'] ?? '';
-        $nombres = $_POST['nombres'] ?? '';
-        $apellidos = $_POST['apellidos'] ?? '';
-        $telefono = $_POST['telefono'] ?? '';
+        $telefono = $_POST['telefonoU'] ?? '';
 
-        if (!empty($id) && !empty($nombres) && !empty($apellidos) && !empty($telefono)) {
+        if (!empty($id) && !empty($telefono)) {
 
             $datosActualizacion = [
-                'nombres' => $nombres,
-                'apellidos' => $apellidos,
                 'telefono' => $telefono,
             ];
 
@@ -55,8 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($cliente) {
                 $id = $cliente['id'];
-                $nombres = $cliente['nombres'];
-                $apellidos = $cliente['apellidos'];
                 $telefono = $cliente['telefono'];
             } else {
                 echo 'No existe cliente con dicho ID';
@@ -98,20 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form action="" method="post" id="formActualizacion">
                 
             <input type="hidden" name="id" value="<?php echo $id ?? ''; ?>">
-
-                <div class="mb-3" >
-                    <label for="nombres" class="form-label">Nombres:</label>
-                    <input type="text" class="form-control" name="nombres" value="<?php echo $nombres ?? ''; ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="apellidos" class="form-label">Apellidos:</label>
-                    <input type="text" class="form-control" name="apellidos" value="<?php echo $apellidos ?? ''; ?>" required>
-                </div>
-
                 <div class="mb-3">
                     <label for="especialidad" class="form-label">Telefono:</label>
-                    <input type="text" class="form-control" name="telefono" value="<?php echo $telefono ?? ''; ?>" required>
+                    <input type="text" class="form-control" name="telefonoU" id="telefonoU" value="<?php echo $telefono ?? ''; ?>" required>
                 </div>
                 <button type="button" class="btn btn-primary" id="btnActualizar">Actualizar</button>
             </form>
@@ -123,11 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         $(document).ready(function() {
             $('#btnActualizar').click(function() {
-                var id = $('input[name="id"]').val();
-                var nombres = $('input[name="nombres"]').val();
-                var apellidos = $('input[name="apellidos"]').val();
-                var telefono = $('input[name="telefono"]').val();
+                var telefono = $('input[id="telefonoU"]').val();
+                if (telefono.length != 10 || isNaN(telefono)) {
+                    $('#telefonoU').css('border-color','#FF0000');
+                    alert('Por favor ingrese un numero de telefono valido.');
+                    return;
+                }
                 $('#formActualizacion').submit();
+                alert('El numero de telefono se ha actualizado correctamente');
             });
         });
     </script>
